@@ -227,7 +227,7 @@ class Agent:
 
                 if user_input == "生成下一个命令的JSON":
                     logger.typewriter_log(
-                        "-=-=-=-=-=-=-= COMMAND AUTHORISED BY USER -=-=-=-=-=-=-=",
+                        "-=-=-=-=-=-=-= 用户授权的命令 -=-=-=-=-=-=-=",
                         Fore.MAGENTA,
                         "",
                     )
