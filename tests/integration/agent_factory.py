@@ -95,8 +95,7 @@ def writer_agent(agent_test_config, memory_none: NoMemory, workspace: Workspace)
     ai_config.command_registry = command_registry
 
     triggering_prompt = (
-        "Determine which next command to use, and respond using the"
-        " format specified above:"
+        "确定要使用的下一个命令，并使用上面指定的格式进行响应："
     )
     system_prompt = ai_config.construct_full_prompt()
 

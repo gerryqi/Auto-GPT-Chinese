@@ -109,7 +109,7 @@ class Agent:
                 )
                 break
             # Send message to AI, get response
-            with Spinner("Thinking... "):
+            with Spinner("思考中... "):
                 assistant_reply = chat_with_ai(
                     self,
                     self.system_prompt,
@@ -155,26 +155,26 @@ class Agent:
                 # to exit
                 self.user_input = ""
                 logger.typewriter_log(
-                    "NEXT ACTION: ",
+                    "下一个命令: ",
                     Fore.CYAN,
-                    f"COMMAND = {Fore.CYAN}{command_name}{Style.RESET_ALL}  "
-                    f"ARGUMENTS = {Fore.CYAN}{arguments}{Style.RESET_ALL}",
+                    f"命令 = {Fore.CYAN}{command_name}{Style.RESET_ALL}  "
+                    f"争论 = {Fore.CYAN}{arguments}{Style.RESET_ALL}",
                 )
 
                 logger.info(
-                    "Enter 'y' to authorise command, 'y -N' to run N continuous commands, 's' to run self-feedback commands or "
-                    "'n' to exit program, or enter feedback for "
+                    "输入 'y'用于授权命令，'y-N'用于运行N个连续命令，'s'用于运行自反馈命令或"
+                    "'n'退出程序，或输入反馈"
                     f"{self.ai_name}..."
                 )
                 while True:
                     if cfg.chat_messages_enabled:
-                        console_input = clean_input("Waiting for your response...")
+                        console_input = clean_input("等待你的回复...")
                     else:
                         console_input = clean_input(
-                            Fore.MAGENTA + "Input:" + Style.RESET_ALL
+                            Fore.MAGENTA + "请输入:" + Style.RESET_ALL
                         )
                     if console_input.lower().strip() == cfg.authorise_key:
-                        user_input = "GENERATE NEXT COMMAND JSON"
+                        user_input = "生成下一个命令的JSON"
                         break
                     elif console_input.lower().strip() == "s":
                         logger.typewriter_log(
@@ -195,18 +195,18 @@ class Agent:
                         command_name = "self_feedback"
                         break
                     elif console_input.lower().strip() == "":
-                        logger.warn("Invalid input format.")
+                        logger.warn("无效的输入格式")
                         continue
                     elif console_input.lower().startswith(f"{cfg.authorise_key} -"):
                         try:
                             self.next_action_count = abs(
                                 int(console_input.split(" ")[1])
                             )
-                            user_input = "GENERATE NEXT COMMAND JSON"
+                            user_input = "生成下一个命令的JSON"
                         except ValueError:
                             logger.warn(
-                                "Invalid input format. Please enter 'y -n' where n is"
-                                " the number of continuous tasks."
+                                "无效的输入格式. 请输入 'y -n' n"
+                                "代表连续任务的数量。"
                             )
                             continue
                         break
@@ -225,22 +225,22 @@ class Agent:
                         )
                         break
 
-                if user_input == "GENERATE NEXT COMMAND JSON":
+                if user_input == "生成下一个命令的JSON":
                     logger.typewriter_log(
                         "-=-=-=-=-=-=-= COMMAND AUTHORISED BY USER -=-=-=-=-=-=-=",
                         Fore.MAGENTA,
                         "",
                     )
                 elif user_input == "EXIT":
-                    logger.info("Exiting...")
+                    logger.info("退出中...")
                     break
             else:
                 # Print command
                 logger.typewriter_log(
-                    "NEXT ACTION: ",
+                    "下一个命令: ",
                     Fore.CYAN,
-                    f"COMMAND = {Fore.CYAN}{command_name}{Style.RESET_ALL}"
-                    f"  ARGUMENTS = {Fore.CYAN}{arguments}{Style.RESET_ALL}",
+                    f"命令 = {Fore.CYAN}{command_name}{Style.RESET_ALL}"
+                    f"  争论 = {Fore.CYAN}{arguments}{Style.RESET_ALL}",
                 )
 
             # Execute command
@@ -249,7 +249,7 @@ class Agent:
                     f"Command {command_name} threw the following error: {arguments}"
                 )
             elif command_name == "human_feedback":
-                result = f"Human feedback: {user_input}"
+                result = f"人类反馈: {user_input}"
             elif command_name == "self_feedback":
                 result = f"Self feedback: {user_input}"
             else:

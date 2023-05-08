@@ -11,7 +11,7 @@ from autogpt.utils import clean_input
 CFG = Config()
 
 DEFAULT_TRIGGERING_PROMPT = (
-    "Determine which next command to use, and respond using the format specified above:"
+    "确定要使用的下一个命令，并使用上面指定的格式进行响应："
 )
 
 
@@ -29,44 +29,42 @@ def build_default_prompt_generator() -> PromptGenerator:
 
     # Add constraints to the PromptGenerator object
     prompt_generator.add_constraint(
-        "~4000 word limit for short term memory. Your short term memory is short, so"
-        " immediately save important information to files."
+        "短期内存限制为4000字左右。你的短期记忆很短，"
+        "所以立即将重要信息保存到文件中。"
     )
     prompt_generator.add_constraint(
-        "If you are unsure how you previously did something or want to recall past"
-        " events, thinking about similar events will help you remember."
+        "如果你不确定自己以前是怎么做的，或者想回忆过去"
+        "事件，思考类似的事件会帮助你记忆。"
     )
-    prompt_generator.add_constraint("No user assistance")
+    prompt_generator.add_constraint("无用户帮助")
     prompt_generator.add_constraint(
-        'Exclusively use the commands listed in double quotes e.g. "command name"'
+        '仅使用双引号中列出的命令，例如"command name"'
     )
 
     # Add resources to the PromptGenerator object
     prompt_generator.add_resource(
-        "Internet access for searches and information gathering."
+        "用于搜索和信息收集的互联网接入。"
     )
-    prompt_generator.add_resource("Long Term memory management.")
+    prompt_generator.add_resource("长期内存管理。")
     prompt_generator.add_resource(
-        "GPT-3.5 powered Agents for delegation of simple tasks."
+        "GPT-3.5支持的代理用于简单任务的委派。"
     )
-    prompt_generator.add_resource("File output.")
+    prompt_generator.add_resource("文件输出。")
 
     # Add performance evaluations to the PromptGenerator object
     prompt_generator.add_performance_evaluation(
-        "Continuously review and analyze your actions to ensure you are performing to"
-        " the best of your abilities."
+        "不断地回顾和分析你的行动，以确保你发挥出了最大的能力。"
     )
     prompt_generator.add_performance_evaluation(
-        "Constructively self-criticize your big-picture behavior constantly."
+        "不断地进行建设性的自我批评。"
     )
     prompt_generator.add_performance_evaluation(
-        "Reflect on past decisions and strategies to refine your approach."
+        "反思过去的决策和策略，以完善您的方法。"
     )
     prompt_generator.add_performance_evaluation(
-        "Every command has a cost, so be smart and efficient. Aim to complete tasks in"
-        " the least number of steps."
+        "每一个命令都有代价，所以要聪明高效。目标是用最少的步骤完成任务。"
     )
-    prompt_generator.add_performance_evaluation("Write all code to a file.")
+    prompt_generator.add_performance_evaluation("将所有代码写入一个文件。")
     return prompt_generator
 
 
@@ -78,28 +76,28 @@ def construct_main_ai_config() -> AIConfig:
     """
     config = AIConfig.load(CFG.ai_settings_file)
     if CFG.skip_reprompt and config.ai_name:
-        logger.typewriter_log("Name :", Fore.GREEN, config.ai_name)
-        logger.typewriter_log("Role :", Fore.GREEN, config.ai_role)
-        logger.typewriter_log("Goals:", Fore.GREEN, f"{config.ai_goals}")
+        logger.typewriter_log("名字 :", Fore.GREEN, config.ai_name)
+        logger.typewriter_log("角色 :", Fore.GREEN, config.ai_role)
+        logger.typewriter_log("目标:", Fore.GREEN, f"{config.ai_goals}")
         logger.typewriter_log(
-            "API Budget:",
+            "API预算:",
             Fore.GREEN,
-            "infinite" if config.api_budget <= 0 else f"${config.api_budget}",
+            "不限制的" if config.api_budget <= 0 else f"${config.api_budget}",
         )
     elif config.ai_name:
         logger.typewriter_log(
-            "Welcome back! ",
+            "欢迎回来!\n",
             Fore.GREEN,
-            f"Would you like me to return to being {config.ai_name}?",
+            f"{config.ai_name},你想让我回归现实吗?",
             speak_text=True,
         )
         should_continue = clean_input(
-            f"""Continue with the last settings?
-Name:  {config.ai_name}
-Role:  {config.ai_role}
-Goals: {config.ai_goals}
-API Budget: {"infinite" if config.api_budget <= 0 else f"${config.api_budget}"}
-Continue ({CFG.authorise_key}/{CFG.exit_key}): """
+            f"""继续上次设置?
+名字:  {config.ai_name}
+角色:  {config.ai_role}
+目标: {config.ai_goals}
+API预算: {"不限制" if config.api_budget <= 0 else f"${config.api_budget}"}
+继续 ({CFG.authorise_key}/{CFG.exit_key}): """
         )
         if should_continue.lower() == CFG.exit_key:
             config = AIConfig()
@@ -116,17 +114,17 @@ Continue ({CFG.authorise_key}/{CFG.exit_key}): """
     logger.typewriter_log(
         config.ai_name,
         Fore.LIGHTBLUE_EX,
-        "has been created with the following details:",
+        "已创建，具有以下详细信息:",
         speak_text=True,
     )
 
     # Print the ai config details
     # Name
-    logger.typewriter_log("Name:", Fore.GREEN, config.ai_name, speak_text=False)
+    logger.typewriter_log("名字:", Fore.GREEN, config.ai_name, speak_text=False)
     # Role
-    logger.typewriter_log("Role:", Fore.GREEN, config.ai_role, speak_text=False)
+    logger.typewriter_log("角色:", Fore.GREEN, config.ai_role, speak_text=False)
     # Goals
-    logger.typewriter_log("Goals:", Fore.GREEN, "", speak_text=False)
+    logger.typewriter_log("目标:", Fore.GREEN, "", speak_text=False)
     for goal in config.ai_goals:
         logger.typewriter_log("-", Fore.GREEN, goal, speak_text=False)
 
