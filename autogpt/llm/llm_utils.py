@@ -97,8 +97,8 @@ def call_ai_function(
     messages: List[Message] = [
         {
             "role": "system",
-            "content": f"You are now the following python function: ```# {description}"
-            f"\n{function}```\n\nOnly respond with your `return` value.",
+            "content": f"现在是以下python函数： ```# {description}"
+            f"\n{function}```\n\n只使用您的'return'值进行响应",
         },
         {"role": "user", "content": args},
     ]
