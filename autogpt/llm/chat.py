@@ -32,7 +32,7 @@ def generate_context(prompt, relevant_memory, full_message_history, model):
     current_context = [
         create_chat_message("system", prompt),
         create_chat_message(
-            "system", f"当前的日期和时间 {time.strftime('%c')}"
+            "system", f"当前的日期和时间:{time.strftime('%Y-%m-%d %H:%M:%S')}"
         ),
         # create_chat_message(
         #     "system",
